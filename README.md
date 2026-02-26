@@ -1,4 +1,4 @@
-# 💾 Simulador de Alocação de Memória Contígua
+# 💾 Alocação de Memória Contígua
 
 Um simulador interativo de gerenciamento de memória contígua escrito em C. Este projeto demonstra como um Sistema Operacional aloca e libera blocos de memória RAM para diferentes processos utilizando uma estrutura de lista encadeada.
 
@@ -18,7 +18,7 @@ O projeto inclui um `Makefile` para facilitar a compilação no Linux.
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/JoaoVictorNascimento1/Alocador_Memoria_Contigua.git](https://github.com/JoaoVictorNascimento1/Alocador_Memoria_Contigua.git)
+   git clone [https://github.com/JoaoVictorNascimento1/Alocacao_Memoria_Contigua.git](https://github.com/JoaoVictorNascimento1/Alocacao_Memoria_Contigua.git)
    cd c-memory-allocator
 
 2. Compile o código:
