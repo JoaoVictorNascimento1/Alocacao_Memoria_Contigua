@@ -18,7 +18,7 @@ O projeto inclui um `Makefile` para facilitar a compilação no Linux.
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/joaovictor/c-memory-allocator.git](https://github.com/joaovictor/c-memory-allocator.git)
+   git clone [https://github.com/JoaoVictorNascimento1/Alocador_Memoria_Contigua.git](https://github.com/JoaoVictorNascimento1/Alocador_Memoria_Contigua.git)
    cd c-memory-allocator
 
 2. Compile o código:
