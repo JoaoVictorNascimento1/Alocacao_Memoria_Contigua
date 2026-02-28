@@ -12,7 +12,7 @@ O programa simula a memória física como um grande bloco contíguo (um grande "
 
 O sistema também trata automaticamente a **fusão de buracos** (*merge holes*) quando blocos adjacentes são liberados, e possui um comando para **compactação de memória**, movendo todos os processos para o início da memória e unindo o espaço livre no final.
 
-## 🛠️ Como Compilar e Executar
+## Compilar e Executar
 
 O projeto inclui um `Makefile` para facilitar a compilação no Linux.
 
