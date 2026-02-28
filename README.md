@@ -2,7 +2,7 @@
 
 Um simulador interativo de gerenciamento de memória contígua escrito em C. Este projeto demonstra como um Sistema Operacional aloca e libera blocos de memória RAM para diferentes processos utilizando uma estrutura de lista encadeada.
 
-## 🚀 Sobre o Projeto
+## Sobre o Projeto
 
 O programa simula a memória física como um grande bloco contíguo (um grande "buraco" ou *hole* inicial). À medida que os processos solicitam memória, o gerenciador percorre a lista encadeada de blocos e aloca o espaço com base em três estratégias clássicas de Sistemas Operacionais:
 
@@ -30,7 +30,7 @@ Bash -> make
 Bash -> ./alocador 1024
 
 
-## 💻 Comandos Disponíveis
+## Comandos Disponíveis
 
 Dentro do shell interativo `alocador>`, você pode usar os seguintes comandos:
 
@@ -42,7 +42,7 @@ Dentro do shell interativo `alocador>`, você pode usar os seguintes comandos:
 | **Status** | `STAT` | Exibe o mapa atual da memória (blocos ocupados e livres). |
 | **Exit** | `X` | Encerra o simulador e limpa a memória alocada. |
 
-## 🕹️ Exemplo de Uso
+## Exemplo de Uso
 ```text
 $ ./alocador 1000
 alocador> RQ P0 200 F
