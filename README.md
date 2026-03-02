@@ -337,8 +337,109 @@ void cleanup_memory() {
 }
 ```
 
-#### `main.c` (Interface CLI e Loop Principal)
-*(Explicação detalhada será inserida aqui)*
+#### 4. `main.c` (Interface CLI e Loop Principal)
 
-#### `Makefile` (Automação de Build)
-*(Explicação detalhada será inserida aqui)*
+Este arquivo é o ponto de entrada do programa. Ele atua como a interface entre o usuário e a lógica complexa do gerenciador de memória. Ele implementa um padrão clássico de interface de linha de comando conhecido como **REPL** (*Read-Eval-Print Loop*).
+
+##### Argumentos de Linha de Comando e Inicialização
+O programa precisa saber o tamanho da memória física a ser simulada antes mesmo de começar. Isso é passado como um argumento na execução (ex: `./alocador 1024`). A função `main` lida com essa captura e validação.
+- argc e argv: São as variáveis padrão do C que capturam o que é digitado no terminal.
+
+- atoi(): Função crucial da biblioteca stdlib.h usada para converter o texto do argumento (ex: "1024") para o valor numérico inteiro 1024.
+
+- **Validação**: O código garante que o usuário passou exatamente dois argumentos e que o tamanho da memória não é negativo ou zero, prevenindo falhas de segmentação.
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "memory_manager.h"
+
+int main(int argc, char *argv[]) {
+    // Verifica se o usuário digitou exatamente 2 argumentos: o nome do programa e o tamanho
+    if (argc != 2) {
+        printf("Uso: %s <tamanho_total_memoria>\n", argv[0]);
+        return 1;
+    }
+
+    // Converte o argumento (que é texto) para um número inteiro
+    int mem_size = atoi(argv[1]);
+    
+    // Validação de segurança
+    if (mem_size <= 0) {
+        printf("Erro: O tamanho da memória deve ser positivo.\n");
+        return 1;
+    }
+
+    // Chama o motor para criar o espaço inicial
+    init_memory(mem_size);
+```
+
+##### O Loop de Execução (REPL) e Limpeza de Input
+
+Após a inicialização, o programa entra em um loop infinito aguardando os comandos do usuário.
+```c
+char command[100]; 
+    char type[10];     
+    char process[10];  
+    int size;          
+    char strategy;     
+
+    while (1) {
+        printf("alocador> ");
+        
+        // Lê a linha inteira digitada pelo usuário até o 'Enter'
+        if (fgets(command, sizeof(command), stdin) == NULL) break;
+
+        // Limpa o caractere de nova linha ('\n') deixado pelo 'Enter'
+        command[strcspn(command, "\n")] = 0;
+```
+
+- **fgets()**: A forma mais segura de ler strings em C, pois evita buffer overflow (estouro de memória) limitando a leitura ao tamanho do vetor command (100 caracteres).
+
+- **strcspn**: Um truque elegante para remover o \n indesejado e trocá-lo pelo terminador nulo \0, finalizando a string corretamente.
+
+##### Interpretador de Comandos (Parsing)
+
+O programa precisa "fatiar" a frase digitada para entender a ação, o processo e a estratégia.
+
+```c
+// Pega a primeira palavra (o comando principal, ex: "RQ")
+        char *token = strtok(command, " ");
+        if (token == NULL) continue; 
+        strcpy(type, token);
+
+        // Verifica qual foi o comando principal
+        if (strcmp(type, "X") == 0) {
+            break; // Sai do loop e encerra
+        } 
+        else if (strcmp(type, "RQ") == 0) {
+            // "Corta" o resto da string para pegar os parâmetros
+            char *p = strtok(NULL, " "); 
+            char *s = strtok(NULL, " "); 
+            char *st = strtok(NULL, " "); 
+
+            if (p && s && st) {
+                strcpy(process, p);
+                size = atoi(s); 
+                strategy = st[0]; // Pega apenas a primeira letra ('F', 'B' ou 'W')
+                request_memory(process, size, strategy);
+            } else {
+                printf("Comando RQ inválido.\n");
+            }
+        }
+        // ... (resto do if/else para RL, C e STAT omitido para brevidade) ...
+```
+
+- **strtok()**: Função da string.h que divide (tokeniza) uma string usando um delimitador (neste caso, o espaço " "). É ela que nos permite quebrar "RQ P0 200 F" em variáveis independentes para passar para o nosso memory_manager.c.
+
+##### Limpeza Final
+
+Se o usuário digitar X, o loop é quebrado e o programa atinge suas linhas finais.
+
+```c
+// Antes de devolver o controle ao terminal do Linux, limpa toda a Heap
+    cleanup_memory();
+    return 0;
+}
+```
+- **cleanup_memory()**: Reforçando a boa prática abordada no arquivo anterior, essa chamada garante que nenhum byte fique perdido na RAM do usuário após o encerramento da simulação.
